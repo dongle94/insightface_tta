@@ -454,18 +454,18 @@ def get_arcface_model(name='r50'):
     network = name
     if name == 'g_r50':
         model_config = 'configs/glint360k_r50.py'
-        model_path = 'model/glint360k_cos_r50.pth'
+        model_path = '../../model_zoo/glint360k_cos_r50.pth'
         network = 'r50'
     elif name == 'g_r100':
         model_config = 'configs/glint360k_r100.py'
-        model_path = 'model/glint360k_cos_r100.pth'
+        model_path = '../../model_zoo/glint360k_cos_r100.pth'
         network = 'r100'
     elif name == 'r50':
         model_config = 'configs/ms1mv3_r50.py'
-        model_path = 'model/ms1mv3_arc_r50.pth'
+        model_path = '../../model_zoo/ms1mv3_arc_r50.pth'
     elif name == 'r100':
         model_config = 'configs/ms1mv3_r100.py'
-        model_path = 'model/ms1mv3_arc_r100.pth'
+        model_path = '.,./../model_zoo/ms1mv3_arc_r100.pth'
     else:
         raise ValueError(f"Unknown model name: {name}")
     
@@ -489,13 +489,10 @@ if __name__ == '__main__':
 
     parser.add_argument('--gpu', default=0, type=int, help='gpu id')
     
-    parser.add_argument('--max', default='', type=str, help='')
-    parser.add_argument('--mode', default=0, type=int, help='')
-    parser.add_argument('--nfolds', default=10, type=int, help='')
     args = parser.parse_args()
 
     # 결과를 파일에 저장하기 위해 Tee 클래스 사용, 로그 파일명 설정 (원하는 경로로 수정 가능)
-    log_file = os.path.join(os.path.dirname(__file__), '../exp/lfw_euclidean_benchmark_r50.txt')
+    log_file = os.path.join(os.path.dirname(__file__), './sample.txt')
     # 콘솔과 파일에 동시 출력하도록 설정
     sys.stdout = Tee(log_file)
 
@@ -519,7 +516,7 @@ if __name__ == '__main__':
         embeddings_eval, 
         issame_list, 
         nrof_folds=10,
-        distance_metric=1,
+        distance_metric=0,
         subtract_mean=False)
     print(f"** Accuracy for each fold: {[round(a, 5) for a in accuracy]}", )
     print(f"** Mean Accuracy: {round(np.mean(accuracy), 6)}")
@@ -531,7 +528,7 @@ if __name__ == '__main__':
     embeddings2 = embeddings_eval[1::2]
 
     # 전체 쌍에 대해 거리를 계산
-    dists = distance(embeddings1, embeddings2, distance_metric=1)
+    dists = distance(embeddings1, embeddings2, distance_metric=0)
     # genuine 쌍(issame_list가 1인 경우)만 선택
     issame_array = np.array(issame_list)
     genuine_dists = dists[issame_array == 1]

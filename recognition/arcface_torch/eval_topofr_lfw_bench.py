@@ -369,6 +369,7 @@ if __name__ == '__main__':
     parser.add_argument('--image_path', default='lfw_testset', type=str, help='')
     parser.add_argument('--batch_size', default=32, type=int, help='')
     parser.add_argument('--network', default='r50', type=str, help='')
+    parser.add_argument('--gpu', default=0, type=int, help='gpu id')
     args = parser.parse_args()
     
     # 결과를 파일에 저장하기 위해 Tee 클래스 사용, 로그 파일명 설정 (원하는 경로로 수정 가능)
@@ -382,7 +383,7 @@ if __name__ == '__main__':
     # model_path = args.model_path
     batch_size = args.batch_size
     
-    device = torch.device('cuda:0'if torch.cuda.is_available() else 'cpu')
+    device = torch.device(f'cuda:{args.gpu}'if torch.cuda.is_available() else 'cpu')
     print(f'** Running on device: {device}')
     # cfg = get_config(args.model_config)
     # model = get_model(args.network, dropout=0, fp16=False, num_features=cfg.embedding_size, num_classes=cfg.num_classes)

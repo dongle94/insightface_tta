@@ -352,13 +352,13 @@ def get_topofr_model(name='r50'):
     network = name
     if name == 'r50':
         model_config = 'configs/glint360k_r50.py'
-        model_path = '../model/Glint360K_R50_TopoFR_9727.pt'
+        model_path = '../../model_zoo/Glint360K_R50_TopoFR_9727.pt'
     elif name == 'r100':
         model_config = 'configs/glint360k_r100.py'
-        model_path = '../model/Glint360K_R100_TopoFR_9760.pt'
+        model_path = '../../model_zoo/Glint360K_R100_TopoFR_9760.pt'
     elif name == 'r200':
         model_config = 'configs/glint360k_r200.py'
-        model_path = '../model/Glint360K_R200_TopoFR_9784.pt'
+        model_path = '../../model_zoo/Glint360K_R200_TopoFR_9784.pt'
     else:
         raise ValueError(f"Unknown model name: {name}")
     
@@ -426,40 +426,8 @@ if __name__ == '__main__':
     names = ['r50', 'r100', 'r200']
     tent_steps = [5, 3, 1]
     episodic = [True]
-    image_paths = ['/data/dataset/Face/ood/CALFW/brightness_1',
-                   '/data/dataset/Face/ood/CALFW/brightness_3',
-                   '/data/dataset/Face/ood/CALFW/brightness_5',
-                   '/data/dataset/Face/ood/CALFW/defocus_blur_1',
-                   '/data/dataset/Face/ood/CALFW/defocus_blur_3',
-                   '/data/dataset/Face/ood/CALFW/defocus_blur_5',
-                   '/data/dataset/Face/ood/CALFW/elastic_transform_1',
-                   '/data/dataset/Face/ood/CALFW/elastic_transform_3',
-                   '/data/dataset/Face/ood/CALFW/elastic_transform_5',
-                   '/data/dataset/Face/ood/CALFW/impulse_noise_1',
-                   '/data/dataset/Face/ood/CALFW/impulse_noise_3',
-                   '/data/dataset/Face/ood/CALFW/impulse_noise_5',
-                   '/data/dataset/Face/ood/CALFW/pixelate_1',
-                   '/data/dataset/Face/ood/CALFW/pixelate_3',
-                   '/data/dataset/Face/ood/CALFW/pixelate_5',
-                   '/data/dataset/Face/ood/CALFW/saturate_1',
-                   '/data/dataset/Face/ood/CALFW/saturate_3',
-                   '/data/dataset/Face/ood/CALFW/saturate_5',
-                   '/data/dataset/Face/ood/CALFW/shot_noise_1',
-                   '/data/dataset/Face/ood/CALFW/shot_noise_3',
-                   '/data/dataset/Face/ood/CALFW/shot_noise_5',
-                   '/data/dataset/Face/ood/CALFW/snow_1',
-                   '/data/dataset/Face/ood/CALFW/snow_3',
-                   '/data/dataset/Face/ood/CALFW/snow_5',
-                   '/data/dataset/Face/ood/CALFW/spatter_1',
-                   '/data/dataset/Face/ood/CALFW/spatter_3',
-                   '/data/dataset/Face/ood/CALFW/spatter_5',
-                   '/data/dataset/Face/ood/CALFW/speckle_noise_1',
-                   '/data/dataset/Face/ood/CALFW/speckle_noise_3',
-                   '/data/dataset/Face/ood/CALFW/speckle_noise_5',
-                   '/data/dataset/Face/ood/CALFW/zoom_blur_1',
-                   '/data/dataset/Face/ood/CALFW/zoom_blur_3',
-                   '/data/dataset/Face/ood/CALFW/zoom_blur_5',                   
-                   ] 
+    image_paths = [                  
+    ] 
 
     # batch_size = args.batch_size
     device = torch.device(f'cuda:{args.gpu}'if torch.cuda.is_available() else 'cpu')

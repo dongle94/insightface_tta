@@ -408,10 +408,14 @@ if __name__ == '__main__':
     # parser.add_argument('--batch_size', default=16, type=int, help='')
     # parser.add_argument('--name', default='r50', type=str, help='')
     parser.add_argument('--gpu', default=0, type=int, help='gpu id')
+    parser.add_argument('--logs', '-l', type=str, help="ex) exp/calfw.txt")
     args = parser.parse_args()
     
     # 출력 결과를 저장하기 위해 Tee 클래스 사용, 로그 파일명 설정 (원하는 경로로 수정 가능)
-    log_file = os.path.join(os.path.dirname(__file__), 'exp3/CALFW_11_BENCH.txt')
+    log_dir = os.path.basename(os.path.abspath(os.path.join(os.path.dirname(__file__), args.logs)))
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir, exist_ok=True)
+    log_file = os.path.join(os.path.dirname(__file__), args.logs)
     # 콘솔과 파일에 동시 출력하도록 설정
     sys.stdout = Tee(log_file)
     

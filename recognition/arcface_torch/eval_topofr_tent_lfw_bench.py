@@ -351,22 +351,22 @@ def evaluate(embeddings, actual_issame, nrof_folds=10, distance_metric=0, subtra
 def get_topofr_model(name='r50'):
     network = name
     if name == 'r50':
-        model_config = 'configs/glint360k_r50.py'
-        model_path = '../../model_zoo/Glint360K_R50_TopoFR_9727.pt'
+        model_config = 'configs/ms1mv2_r50.py'
+        model_path = '../../model_zoo/MS1MV2_R50_TopoFR_9649.pt'
     elif name == 'r100':
-        model_config = 'configs/glint360k_r100.py'
-        model_path = '../../model_zoo/Glint360K_R100_TopoFR_9760.pt'
+        model_config = 'configs/ms1mv2_r100.py'
+        model_path = '../../model_zoo/MS1MV2_R100_TopoFR_9695.pt'
     elif name == 'r200':
-        model_config = 'configs/glint360k_r200.py'
-        model_path = '../../model_zoo/Glint360K_R200_TopoFR_9784.pt'
+        model_config = 'configs/ms1mv2_r200.py'
+        model_path = '../../model_zoo/MS1MV2_R200_TopoFR_9708.pt'
     else:
         raise ValueError(f"Unknown model name: {name}")
     
     cfg = get_config(model_config)
-    model = get_model(network, dropout=0, fp16=False, num_features=cfg.embedding_size, num_classes=cfg.num_classes)
+    model = get_topo_model(network, dropout=0, fp16=False, num_features=cfg.embedding_size, num_classes=cfg.num_classes)
     weight = torch.load(model_path, weights_only=True)
     model.load_state_dict(weight)
-    # model = torch.nn.DataParallel(model)
+    model = torch.nn.DataParallel(model)
 
     return model, model_path
 
@@ -412,7 +412,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     # 출력 결과를 저장하기 위해 Tee 클래스 사용, 로그 파일명 설정 (원하는 경로로 수정 가능)
-    log_dir = os.path.basename(os.path.abspath(os.path.join(os.path.dirname(__file__), args.logs)))
+    log_dir = os.path.dirname(os.path.abspath(os.path.join(os.path.dirname(__file__), args.logs)))
     if not os.path.exists(log_dir):
         os.makedirs(log_dir, exist_ok=True)
     log_file = os.path.join(os.path.dirname(__file__), args.logs)
@@ -423,10 +423,11 @@ if __name__ == '__main__':
     # dataset_dir = args.image_path
     # print(f"** Test Dataset: {os.path.basename(dataset_dir)}")
     
-    names = ['r50', 'r100', 'r200']
-    tent_steps = [5, 3, 1]
+    names = ['r200', 'r100', 'r50']
+    tent_steps = [5, 1]
     episodic = [True]
-    image_paths = [                  
+    image_paths = [  
+
     ] 
 
     # batch_size = args.batch_size
@@ -437,9 +438,9 @@ if __name__ == '__main__':
         print(f"** Test Dataset: {os.path.basename(dataset_dir)}")
         for name in names:
             if name == 'r200':
-                batch_sizes = [8, 16, 32]      
+                batch_sizes = [192, 128, 64]      
             else: 
-                batch_sizes = [16, 32, 48]  
+                batch_sizes = [192, 128, 64]  
             for tbs in batch_sizes:
                 for epi in episodic:
                     for ts in tent_steps:

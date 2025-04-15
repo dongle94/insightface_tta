@@ -18,7 +18,7 @@ import sys
 import warnings
 
 import tent
-from backbones import get_model
+from backbones import get_topo_model
 from utils.utils_config import get_config
 
 

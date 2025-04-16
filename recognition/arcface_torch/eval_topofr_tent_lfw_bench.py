@@ -53,18 +53,22 @@ class FaceDataset(Dataset):
     def __init__(self, path_list, transform=None):
         self.path_list = path_list
         self.transform = transform
+        self.images = []
+        for idx, path in enumerate(path_list):
+            image = Image.open(path).convert("RGB")
+            image = self.transform(image)
+            self.images.append(image)
 
     def __len__(self):
         return len(self.path_list)
     def __getitem__(self, idx):
         img_path = self.path_list[idx]
-        image = Image.open(img_path).convert("RGB")
-        image = self.transform(image)
+        image = self.images[idx]
+
         return image, img_path
 
 
-def tent_get_embeddings_from_pathlist(path_list, batch_size=16):
-    dataset = FaceDataset(path_list, transform=TRANSFORM)
+def tent_get_embeddings_from_pathlist(dataset, path_list, batch_size=16):
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
 
     embeddings_dict = {}
@@ -436,6 +440,9 @@ if __name__ == '__main__':
 
     for dataset_dir in image_paths:
         print(f"** Test Dataset: {os.path.basename(dataset_dir)}")
+        path_list, issame_list = get_paths(dataset_dir)
+        dataset = FaceDataset(path_list, transform=TRANSFORM)
+                                
         for name in names:
             if name == 'r200':
                 batch_sizes = [192, 128, 64]      
@@ -450,9 +457,8 @@ if __name__ == '__main__':
                         print("** --------------------------------- **")
                         print(f"** Model loaded: {param}")
 
-                        path_list, issame_list = get_paths(dataset_dir)
-                        embeddings_dict, adapted_embeddings_dict = tent_get_embeddings_from_pathlist(path_list, batch_size=tbs)
-                        
+                        embeddings_dict, adapted_embeddings_dict = tent_get_embeddings_from_pathlist(dataset, path_list, batch_size=tbs)
+
                         embeddings_eval = np.array([embeddings_dict[path] for path in path_list])
                         adapted_embeddings_eval = np.array([adapted_embeddings_dict[path] for path in path_list])
                         

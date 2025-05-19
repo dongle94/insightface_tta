@@ -14,8 +14,8 @@ parser.add_argument('-o', '--output_dir', default='Asian_celebrity_align', help=
 args = parser.parse_args()
 
 # PATH
-input_folder = os.path.abspath(args.i)
-output_folder = os.path.abspath(args.o)  
+input_folder = os.path.abspath(args.input_dir)
+output_folder = os.path.abspath(args.output_dir)  
 os.makedirs(output_folder, exist_ok=True)
 
 # Infer face detection by CPU

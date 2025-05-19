@@ -16,13 +16,14 @@ args = parser.parse_args()
 
 
 # Input Path
-input_dir = args.input_dir
+input_dir = os.path.abspath(args.input_dir)
 
 # Output Path
 output_dir = os.path.abspath(args.output_dir)
 os.makedirs(output_dir, exist_ok=True)  # output 폴더 생성
 output_folder = "gen"
-os.makedirs(os.path.join(output_dir, output_folder), exist_ok=True)  # gen 폴더 생성
+output_path = os.path.join(output_dir, output_folder)
+os.makedirs(output_path, exist_ok=True)  # gen 폴더 생성
 
 # Intialize
 random.seed(42)
@@ -40,7 +41,7 @@ for person_folder in os.listdir(input_dir):
         continue
 
     # 각 디렉토리 내 이미지 파일(jpg, png) 가져오기
-    image_files = sorted([f for f in os.listdir(person_path) if f.endswith('.jpg') or f.endswith('.jpg')])
+    image_files = sorted([f for f in os.listdir(person_path) if f.endswith('.jpg') or f.endswith('.png')])
     if len(image_files) < 2:
         continue
     
@@ -56,7 +57,7 @@ print(f"총 {len(selected_pairs)} 쌍의 이미지가 선택되었습니다.")
         
 # copy selected pairs into directory
 for idx, (source1, source2) in enumerate(selected_pairs):
-    pair_folder = os.path.join(output_folder, str(idx))
+    pair_folder = os.path.join(output_path, str(idx))
     os.makedirs(pair_folder, exist_ok=True)
     
     # 파일명 앞에 pair1_와 pair2_ 접두어 추가

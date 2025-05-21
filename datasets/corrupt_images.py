@@ -130,7 +130,7 @@ if __name__ == "__main__":
     if opt.subset:
         corruptions.extend(get_corruption_names(opt.subset))
     corruptions = list(set(corruptions))  # remove duplicates
-    assert len(corruptions) > 1, ValueError("No corruption types were provided")
+    assert len(corruptions) >= 1, ValueError("No corruption types were provided")
 
     # Spawn multiprocessing pool
     pool = Pool(opt.j)
